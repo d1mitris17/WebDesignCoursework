@@ -1,7 +1,14 @@
 {
-  // These tasks will run in order when initializing your CodeSandbox project.
-  "setupTasks": [],
+  // Setup tasks - execute on MicroVM launch and restart
+  "setupTasks": [
+    "npm install",                  // Installs all dependencies on startup
+    "npm run setup-db"                  // Optional: A script to initialize the database, if required
+  ],
 
-  // These tasks can be run from CodeSandbox. Running one will open a log in the app.
-  "tasks": {}
+  // Development tasks - these begin automatically after setup completes
+  "tasks": {
+    "start": "node src/app.js",       // Starts your server (default entry point)
+    "install": "npm install",
+    "dotenv": "npm install dotenv"        // Installs all dependencies from package.json
+  }
 }

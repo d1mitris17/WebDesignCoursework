@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const authRoutes = require("./api/auth");
 const cardRoutes = require("./api/cards");
+const path = require("path");
 
 // Initialize the app
 const app = express();
@@ -10,11 +11,12 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Parse JSON bodies
+app.use(express.static(path.join(__dirname, "../public"))); // Serve static files from the public directory
 
 // Routes
 // Root route
 app.get("/", (req, res) => {
-  res.send("Welcome to the Collectible Card Logger API!");
+  res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 
 // Use the routes

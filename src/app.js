@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const authRoutes = require("./api/auth");
 const cardRoutes = require("./api/cards");
+const database = require("./db/setupDatabase");
 const path = require("path");
 
 // Initialize the app
@@ -19,13 +20,14 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 
-// Use the routes
-app.use("/api/auth", authRoutes); // All auth-related endpoints will be prefixed with /api/auth
-app.use("/api/cards", cardRoutes); // All card-related endpoints will be prefixed with /api/cards
+
+// // Use the routes
+// app.use("/api/auth", authRoutes); // All auth-related endpoints will be prefixed with /api/auth
+// app.use("/api/cards", cardRoutes); // All card-related endpoints will be prefixed with /api/cards
 
 // 404 Error for unmatched routes
 app.use((req, res, next) => {
-  res.status(404).json({ message: "Route not found" });
+  res.status(404).json({ "message" : "Route not found" });
 });
 
 // General Error Handling

@@ -1,15 +1,27 @@
 {
-  // Setup tasks - execute on MicroVM launch and restart
   "setupTasks": [
-    "npm install",                  // Installs all dependencies on startup
-    // "npm run setup-db",
-    "node src/app.js"
+    {
+      "command": "npm install",
+      "name": "Install Dependencies"
+    }
+    // {
+    //   "command": "npm start",
+    //   "name": "Start Server"
+    // }
   ],
 
-  // Development tasks - these begin automatically after setup completes
   "tasks": {
-    "start": "node src/app.js",       // Starts your server (default entry point)
-    "install": "npm install",
-    "dotenv": "npm install dotenv"        // Installs all dependencies from package.json
+    "start": {
+      "name": "Start Server",
+      "command": "npm start"
+    },
+    "install": {
+      "name": "Install Dependencies",
+      "command": "npm install"
+    },
+    "dotenv": {
+      "name": "Install dotenv",
+      "command": "npm install dotenv"
+    }
   }
 }

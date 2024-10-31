@@ -1,42 +1,62 @@
 const express = require("express");
-const bcrypt = require("bcrypt"); // For hashing passwords
-const jwt = require("jsonwebtoken"); // For generating JSON Web Tokens
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const db = require("../db/db"); // Import the database connection
 const router = express.Router();
-
-// Sample in-memory user storage (replace with database logic in production)
-let users = [];
 
 // Signup route
 router.post("/signup", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, email, password } = req.body;
 
   // Check if user already exists
-  const existingUser = users.find((user) => user.username === username);
-  if (existingUser) {
-    return res.status(400).json({ message: "User already exists" });
-  }
+  db.query("SELECT * FROM users WHERE username = ?", [username], async (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error", error: err });
+    
+    if (results.length > 0) {
+      return res.status(400).json({ message: "User already exists" });
+    }
 
-  // Hash password
-  const hashedPassword = await bcrypt.hash(password, 10);
-  users.push({ username, password: hashedPassword }); // Save user
-  res.status(201).json({ message: "User created successfully" });
+    // Hash the password
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Insert new user into database
+      db.query("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", 
+        [username, email, hashedPassword], 
+        (err) => {
+          if (err) return res.status(500).json({ message: "Error creating user", error: err });
+          res.status(201).json({ message: "User created successfully" });
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Error hashing password", error });
+    }
+  });
 });
 
 // Login route
-router.post("/login", async (req, res) => {
+router.post("/login", (req, res) => {
   const { username, password } = req.body;
-  const user = users.find((user) => user.username === username);
 
-  // Check if user exists and password matches
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(401).json({ message: "Invalid credentials" });
-  }
+  // Check if user exists
+  db.query("SELECT * FROM users WHERE username = ?", [username], async (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error", error: err });
+    
+    if (results.length === 0) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
-  // Generate JWT
-  const token = jwt.sign({ username: user.username }, "your_secret_key", {
-    expiresIn: "1h",
+    const user = results[0];
+
+    // Check if password matches
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    res.json({ message: "Login successful", token });
   });
-  res.json({ token });
 });
 
 module.exports = router;

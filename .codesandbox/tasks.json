@@ -2,7 +2,8 @@
   // Setup tasks - execute on MicroVM launch and restart
   "setupTasks": [
     "npm install",                  // Installs all dependencies on startup
-    "npm run setup-db"                  // Optional: A script to initialize the database, if required
+    // "npm run setup-db",
+    "node src/app.js"
   ],
 
   // Development tasks - these begin automatically after setup completes

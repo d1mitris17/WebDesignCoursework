@@ -22,8 +22,8 @@ app.get("/", (req, res) => {
 
 
 // // Use the routes
-// app.use("/api/auth", authRoutes); // All auth-related endpoints will be prefixed with /api/auth
-// app.use("/api/cards", cardRoutes); // All card-related endpoints will be prefixed with /api/cards
+app.use("/api/auth", authRoutes); // All auth-related endpoints will be prefixed with /api/auth
+app.use("/api/cards", cardRoutes); // All card-related endpoints will be prefixed with /api/cards
 
 // 404 Error for unmatched routes
 app.use((req, res, next) => {

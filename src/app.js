@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 
 // 404 Error for unmatched routes
 app.use((req, res, next) => {
-  res.status(404).json({ "message" : "Route not found" });
+  res.status(404).json({ message : "Route not found" });
 });
 
 // General Error Handling

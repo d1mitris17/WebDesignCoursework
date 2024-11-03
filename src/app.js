@@ -18,7 +18,12 @@ app.use(cookieParser()); // Use cookie-parser
 app.use(express.static(path.join(__dirname, "../public")));
 
 // Routes
-app.get("/", restrictAuth, (req, res) => {
+// app.get("/", restrictAuth, (req, res) => {
+//   // res.sendFile(path.join(__dirname, "../public/index.html"));
+//   res.send("/log-in");
+// });
+
+app.get("/log-in", restrictAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 

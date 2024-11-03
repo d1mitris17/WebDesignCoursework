@@ -25,7 +25,7 @@ $(document).ready(function () {
         // Store the token (for simplicity, localStorage is used here)
         localStorage.setItem("token", response.token);
         alert("Login successful!");
-        window.location.href = "/dashboard.html"; // Redirect to dashboard after login
+        window.location.href = "/homepage"; // Redirect to homepage after login
       } catch (error) {
         console.error("Login failed:", error);
         alert("Invalid credentials, please try again.");
@@ -35,27 +35,27 @@ $(document).ready(function () {
     /**
      * Signup function
      */
-    $("#signupForm").on("submit", async function (e) {
-      e.preventDefault();
-  
-      const username = $("#signupUsername").val();
-      const password = $("#signupPassword").val();
-  
-      try {
-        await $.ajax({
+    $("#signupForm").submit(function (event) {
+      event.preventDefault(); // Prevent form from submitting the traditional way
+
+      const username = $("#username").val();
+      const email = $("#email").val();
+      const password = $("#password").val();
+
+      $.ajax({
           url: `${API_BASE_URL}/auth/signup`,
-          method: "POST",
+          type: "POST",
           contentType: "application/json",
-          data: JSON.stringify({ username, password })
-        });
-  
-        alert("Signup successful! Please login.");
-        window.location.href = "/login.html";
-      } catch (error) {
-        console.error("Signup failed:", error);
-        alert("Signup failed, please try again.");
-      }
-    });
+          data: JSON.stringify({ username, email, password }),
+          success: function (response) {
+              $("#signupMessage").text(response.message).css("color", "green");
+              // Redirect or clear the form as needed
+          },
+          error: function (xhr) {
+              $("#signupMessage").text(xhr.responseJSON.message).css("color", "red");
+          },
+      });
+  });
   
     /**
      * Fetch and display cards (example for a dashboard or cards page)

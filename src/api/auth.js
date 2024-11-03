@@ -33,30 +33,45 @@ router.post("/signup", async (req, res) => {
   });
 });
 
-// Login route
+
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
 
-  // Check if user exists
+  // Query the database to find the user by username
   db.query("SELECT * FROM users WHERE username = ?", [username], async (err, results) => {
-    if (err) return res.status(500).json({ message: "Database error", error: err });
-    
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+
+    // Check if user exists
     if (results.length === 0) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
     const user = results[0];
 
-    // Check if password matches
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    // Compare passwords
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Generate JWT token
-    const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET, { expiresIn: "1h" });
-    res.json({ message: "Login successful", token });
+    // Generate JWT
+    const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    // Set the JWT as a cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600000, // 1 hour
+    });
+
+    res.json({ message: "Login successful" });
   });
 });
+
 
 module.exports = router;

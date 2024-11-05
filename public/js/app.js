@@ -22,10 +22,8 @@ $(document).ready(function () {
           data: JSON.stringify({ username, password })
         });
         
-        // Store the token (for simplicity, localStorage is used here)
-        localStorage.setItem("token", response.token);
         alert("Login successful!");
-        window.location.href = "/homepage"; // Redirect to homepage after login
+        window.location.href = "/"; // Redirect to homepage after login
       } catch (error) {
         console.error("Login failed:", error);
         alert("Invalid credentials, please try again.");

@@ -60,6 +60,7 @@ router.post("/login", (req, res) => {
     // Generate JWT
     const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET, {
       expiresIn: "1h",
+      algorithm: "RS256"
     });
 
     // Set the JWT as a cookie

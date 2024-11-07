@@ -15,10 +15,10 @@ $(document).ready(function () {
       success: function (xhr) {
         alert("Login successful!");
         window.location.href = "/"; // Redirect to homepage after login
-    },
-    error: function (xhr) {
-        $("#loginMessage").text(xhr.responseJSON.message).css("color", "red");
-    },
-      });
+      },
+      error: function (xhr) {
+          $("#loginMessage").text(xhr.responseJSON.message).css("color", "red");
+      },
+    });
   });
 });

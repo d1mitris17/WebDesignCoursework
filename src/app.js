@@ -29,6 +29,22 @@ app.get("/log-in", restrictAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "../public/login.html"));
 });
 
+app.get("/collections", restrictAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/collections.html"));
+});
+
+app.get("/settings", restrictAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/settings.html"));
+});
+
+app.get("/my-profile", restrictAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/myProfile.html"));
+});
+
+app.get("/my-cards", restrictAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/myCards.html"));
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/cards", cardRoutes);
 

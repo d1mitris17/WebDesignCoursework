@@ -33,7 +33,7 @@ router.post("/signup", async (req, res) => {
   });
 });
 
-
+// Login route
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
 
@@ -51,27 +51,38 @@ router.post("/login", (req, res) => {
 
     const user = results[0];
 
-    // Compare passwords
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return res.status(401).json({ message: "Invalid credentials" });
+    try {
+      // Compare passwords
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+
+      // Generate JWT with user ID in the payload
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+        expiresIn: "1h"
+      });
+
+      // Set the JWT as an HTTP-only cookie
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 1 * 60 * 60 * 1000 // 1 hour
+      });
+
+      res.json({ message: "Login successful" });
+    } catch (error) {
+      console.error("Password comparison error:", error);
+      return res.status(500).json({ message: "Internal server error" });
     }
-
-    // Generate JWT
-    const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET, {
-      expiresIn: "1h"
-    });
-
-    // Set the JWT as a cookie
-    res.cookie("session", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 1 * 60 * 60 * 1000 // 1 hour
-    });
-
-    res.json({ message: "Login successful" });
   });
 });
 
+// Logout route
+router.post("/logout", (req, res) => {
+  // Clear the JWT cookie
+  res.clearCookie("token");
+  res.json({ message: "Logout successful" });
+});
 
 module.exports = router;

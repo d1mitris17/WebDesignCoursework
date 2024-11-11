@@ -15,6 +15,7 @@ h1 {
     left: 0;
     width: 100%;
     margin: 0px 0px 0px 0px;
+    z-index: 1;
 }
 h2 {
     background-color: #bf0d3e;
@@ -22,7 +23,6 @@ h2 {
     padding: 10px 10px 10px 10px;
     font-size: 4em;
     text-align: center;
-    position: sticky;
     top: 0;
     left: 0;
     width: 100%;
@@ -57,5 +57,20 @@ h2 {
     padding: 0px 0px 0px 0px;
     font-style: italic;
 
+}
+h3 {
+    color:#0c244c;
+    background-color: #d4cfd8;
+    font-size: 4em;
+    text-align: center;
+    margin: 5vh 30vw 0 30vw;
+    padding: 10px 0px 10px 0px;
+    border-radius: 15px;
+    
+}
+
+.featuredcards{
+    height: 60vh;
+    padding: 0 0 0 0;
 }
 

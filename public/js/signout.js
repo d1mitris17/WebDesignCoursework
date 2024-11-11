@@ -11,7 +11,7 @@ $(document).ready(function () {
         url: `api/auth/logout`,
         method: "POST",
         success: function (xhr) {
-          alert("Login successful!");
+          alert("Log out successful!");
           window.location.href = "/log-in"; // Redirect to homepage after login
         },
         error: function (xhr) {

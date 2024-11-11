@@ -4,55 +4,47 @@ body {
     margin: 0px 0px 0px 0px;
     font-family: "Helvetica";
 }
-h1 {
+#h1b {
     color: #bf0d3e;
     background-color: #d4cfd8;
     padding: 10px 10px 10px 10px;
     font-size: 10em;
     text-align: center;
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100%;
+    width: 100vw;
     margin: 0px 0px 0px 0px;
     z-index: 1;
+    border: none;
+    font-weight: bold;
+    font-family: "Helvetica";
 }
-h2 {
-    background-color: #bf0d3e;
-    color: #d4cfd8;
-    padding: 10px 10px 10px 10px;
-    font-size: 4em;
-    text-align: center;
-    top: 0;
-    left: 0;
-    width: 100%;
-    margin: 0px 0px 0px 0px;
-   
-}
+
 #buttons {
     font-size: 0;
     font-family: "Helvetica";
+    position: sticky;
+    top: 0;
+    left: 0;
 }
 .navButton {
     background-color: #bf0d3e;
     border: none;
     color: #d4cfd8;
-    position: sticky;
-    font-size: 25px;
+    font-size: 30px;
     width: 25vw;
-    height: 5vh;
+    height: 8vh;
     margin: 0px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
     font-weight: bold;
+    
         
 }
 .navButton:hover {
     background-color: #d4cfd8;
     border: none;
     color: #bf0d3e;
-    font-size: 25px;
+    font-size: 30px;
     width: 25vw;
-    height: 5vh;
+    height: 8vh;
     margin: 0px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
     font-style: italic;

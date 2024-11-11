@@ -15,7 +15,7 @@ $(document).ready(function () {
       data: JSON.stringify({ username, email, password }),
       success: function (xhr) {
           $("#signupMessage").text(xhr.message).css("color", "green");
-          window.location.href = "/"; // Redirect to homepage after login
+          window.location.href = "/log-in"; // Redirect to homepage after login
       },
       error: function (xhr) {
           $("#signupMessage").text(xhr.responseJSON.message).css("color", "red");

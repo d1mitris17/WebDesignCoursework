@@ -73,10 +73,3 @@ CREATE TABLE card_types (
     type VARCHAR(50) UNIQUE NOT NULL
 );
 ```
-
--- Optional: Insert some card types for reference
-INSERT INTO card_types (type) VALUES
-    ('Pokémon'),
-    ('Magic'),
-    ('Yu-Gi-Oh');
-```

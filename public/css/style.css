@@ -10,7 +10,7 @@ body {
     padding: 10px 10px 10px 10px;
     font-size: 10em;
     text-align: center;
-    width: 100vw;
+    width: 100%;
     margin: 0px 0px 0px 0px;
     z-index: 1;
     border: none;
@@ -30,7 +30,7 @@ body {
     border: none;
     color: #d4cfd8;
     font-size: 30px;
-    width: 25vw;
+    width: 25%;
     height: 8vh;
     margin: 0px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
@@ -43,7 +43,7 @@ body {
     border: none;
     color: #bf0d3e;
     font-size: 30px;
-    width: 25vw;
+    width: 25%;
     height: 8vh;
     margin: 0px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
@@ -55,7 +55,7 @@ h3 {
     background-color: #d4cfd8;
     font-size: 4em;
     text-align: center;
-    margin: 5vh 30vw 5vh 30vw;
+    margin: 5vh 30% 5vh 30%;
     padding: 10px 0px 10px 0px;
     border-radius: 15px;
     

@@ -12,7 +12,7 @@ CREATE TABLE users (
     username VARCHAR(50) NOT NULL UNIQUE,    -- Unique username for each user
     email VARCHAR(100) NOT NULL UNIQUE,       -- Unique email address for each user
     password VARCHAR(255) NOT NULL,           -- Hashed password for user authentication
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Timestamp for account creation
+    created_at TIMESTAMP,  -- Timestamp for account creation
     last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  -- Timestamp for last profile update
 );
 
@@ -58,7 +58,7 @@ CREATE TABLE card_collections (
     user_id INT,
     card_id INT,
     quantity INT DEFAULT 1,
-    condition VARCHAR(50),
+    `condition` VARCHAR(50),
     date_acquired DATE,
     PRIMARY KEY (user_id, card_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,

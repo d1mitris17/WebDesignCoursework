@@ -1,19 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const mysql = require("mysql2/promise");
-
-// Database connection pool
-const pool = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "", // Replace with your database password
-  database: "card_collector"
-});
+const db = require("../db/setupDatabase"); // Import the database connection
 
 // GET all cards in a specific collection for a user
 router.get("/api/collections/:user_id/cards", async (req, res) => {
   try {
-    const [cards] = await pool.execute(
+    const [cards] = await db.execute(
       `SELECT c.id, c.name, c.description, c.image, cc.quantity, cc.condition, cc.date_acquired
        FROM cards c
        JOIN card_collections cc ON c.id = cc.card_id
@@ -31,7 +24,7 @@ router.get("/api/collections/:user_id/cards", async (req, res) => {
 router.post("/api/collections/:user_id/cards", async (req, res) => {
   const { card_id, quantity, condition, date_acquired } = req.body;
   try {
-    const [result] = await pool.execute(
+    const [result] = await db.execute(
       `INSERT INTO card_collections (user_id, card_id, quantity, condition, date_acquired)
        VALUES (?, ?, ?, ?, ?)`,
       [req.params.user_id, card_id, quantity || 1, condition, date_acquired]
@@ -65,7 +58,7 @@ router.get("/api/cards/:card_id", async (req, res) => {
 router.put("/api/cards/:card_id", async (req, res) => {
   const { quantity, condition, date_acquired } = req.body;
   try {
-    const [result] = await pool.execute(
+    const [result] = await db.execute(
       `UPDATE card_collections
        SET quantity = ?, condition = ?, date_acquired = ?
        WHERE card_id = ? AND user_id = ?`,
@@ -82,7 +75,7 @@ router.put("/api/cards/:card_id", async (req, res) => {
 // DELETE a specific card from a user's collection
 router.delete("/api/cards/:card_id", async (req, res) => {
   try {
-    const [result] = await pool.execute(
+    const [result] = await db.execute(
       `DELETE FROM card_collections WHERE card_id = ? AND user_id = ?`,
       [req.params.card_id, req.query.user_id]
     );

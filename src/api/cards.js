@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mysql = require("mysql2/promise");
-const db = require("../db/setupDatabase"); // Import the database connection
+const db = require("../db/database"); // Import the database connection
 const { requireAuth } = require("./authMiddleware");
 
 router.get("/collections", requireAuth, async (req, res) => {

@@ -4,7 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./api/auth");
 const cardRoutes = require("./api/cards");
-const database = require("./db/setupDatabase");
+const database = require("./db/database");
 const path = require("path");
 const { restrictAuth, requireAuth } = require("./api/authMiddleware");
 

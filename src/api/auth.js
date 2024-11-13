@@ -8,41 +8,37 @@ const router = express.Router();
 router.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
 
-  // Check if user already exists
-  db.query("SELECT * FROM users WHERE username = ?", [username], async (err, results) => {
-    if (err) return res.status(500).json({ message: "Database error", error: err });
-    
+  try {
+    // Check if user already exists
+    const [results] = await db.query("SELECT * FROM users WHERE username = ?", [username]);
+
     if (results.length > 0) {
       return res.status(400).json({ message: "User already exists" });
     }
 
     // Hash the password
-    try {
-      const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Insert new user into database
-      db.query("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", 
-        [username, email, hashedPassword], 
-        (err) => {
-          if (err) return res.status(500).json({ message: "Error creating user", error: err });
-          res.status(201).json({ message: "User created successfully" });
-      });
-    } catch (error) {
-      res.status(500).json({ message: "Error hashing password", error });
-    }
-  });
+    // Insert new user into database
+    await db.query("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", 
+      [username, email, hashedPassword]
+    );
+
+    res.status(201).json({ message: "User created successfully" });
+
+  } catch (error) {
+    console.error("Error during signup:", error);
+    res.status(500).json({ message: "Internal server error", error });
+  }
 });
 
 // Login route
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
-  // Query the database to find the user by username
-  db.query("SELECT * FROM users WHERE username = ?", [username], async (err, results) => {
-    if (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ message: "Internal server error" });
-    }
+  try {
+    // Query the database to find the user by username
+    const [results] = await db.query("SELECT * FROM users WHERE username = ?", [username]);
 
     // Check if user exists
     if (results.length === 0) {
@@ -51,31 +47,29 @@ router.post("/login", (req, res) => {
 
     const user = results[0];
 
-    try {
-      // Compare passwords
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-        return res.status(401).json({ message: "Invalid credentials" });
-      }
-
-      // Generate JWT with user ID in the payload
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: "1h"
-      });
-
-      // Set the JWT as an HTTP-only cookie
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 1 * 60 * 60 * 1000 // 1 hour
-      });
-
-      res.json({ message: "Login successful" });
-    } catch (error) {
-      console.error("Password comparison error:", error);
-      return res.status(500).json({ message: "Internal server error" });
+    // Compare passwords
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.status(401).json({ message: "Invalid credentials" });
     }
-  });
+
+    // Generate JWT with user ID in the payload
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "1h"
+    });
+
+    // Set the JWT as an HTTP-only cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 1 * 60 * 60 * 1000 // 1 hour
+    });
+
+    res.json({ message: "Login successful" });
+  } catch (error) {
+    console.error("Database or password comparison error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 // Logout route
@@ -98,13 +92,17 @@ function authenticateToken(req, res, next) {
 }
 
 // Endpoint to get logged-in user information
-router.get("/me", authenticateToken, (req, res) => {
-  // Here, req.user contains the user info decoded from the JWT
-  db.query("SELECT id, username FROM users WHERE id = ?", [req.user.id], (err, results) => {
-    if (err) return res.status(500).json({ message: "Database error", error: err });
+router.get("/me", authenticateToken, async (req, res) => {
+  try {
+    // Here, req.user contains the user info decoded from the JWT
+    const [results] = await db.query("SELECT id, username FROM users WHERE id = ?", [req.user.id]);
     if (results.length === 0) return res.status(404).json({ message: "User not found" });
+    
     res.json(results[0]); // Return user info
-  });
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).json({ message: "Internal server error", error });
+  }
 });
 
 module.exports = router;

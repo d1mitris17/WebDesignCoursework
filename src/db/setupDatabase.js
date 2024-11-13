@@ -1,4 +1,6 @@
 const mysql2 = require("mysql2/promise");
+const fs = require("fs")
+const path = require("path");
 require("dotenv").config();
 
 const connection = mysql2.createPool({
@@ -11,7 +13,6 @@ const connection = mysql2.createPool({
   queueLimit: 0
 });
 
-// Log a message when connected to the database
 (async () => {
   try {
     await connection.getConnection();

@@ -62,7 +62,7 @@ CREATE TABLE card_collections (
     date_acquired DATE,
     PRIMARY KEY (user_id, card_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (card_id) REFERENCES cards(id) ON DELETE CASCADE
+    FOREIGN KEY (card_id) REFERENCES cards(id)
 );
 ```
 

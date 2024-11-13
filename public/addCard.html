@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Card to Collection</title>
+</head>
+<body>
+    <h1>Add a Card to Your Collection</h1>
+    <input type="text" id="searchBar" placeholder="Search cards..." />
+    <div id="allCardsContainer"></div>
+    <button id="loadMoreButton">Load More</button>
+    <!-- Modal for adding card details -->
+    <div id="addCardModal" style="display: none;">
+        <h2>Add Card Details</h2>
+        <form id="addCardForm">
+            <input type="hidden" id="selectedCardId" />
+            <label>Condition:</label>
+            <input type="text" id="cardCondition" required />
+            <label>Date Acquired:</label>
+            <input type="date" id="cardDateAcquired" required />
+            <label>Quantity:</label>
+            <input type="number" id="cardQuantity" min="1" required />
+            <button type="submit">Add to Collection</button>
+        </form>
+    </div>
+
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/addCard.js"></script>
+</body>
+</html>

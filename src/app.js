@@ -3,10 +3,10 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./api/auth");
-const cardRoutes = require("./api/cards");
 const database = require("./db/setupDatabase");
 const path = require("path");
 const { restrictAuth, requireAuth } = require("./api/authMiddleware");
+const cardsRoutes = require("./api/cards");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -50,7 +50,7 @@ app.get("/my-cards", requireAuth, (req, res) => {
 
 // API routes
 app.use("/api/auth", authRoutes);
-app.use("/api/cards", cardRoutes);
+app.use("/api/cards", cardsRoutes);
 
 // 404 Error handler
 app.use((req, res, next) => {

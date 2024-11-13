@@ -85,4 +85,26 @@ router.post("/logout", (req, res) => {
   res.json({ message: "Logout successful" });
 });
 
+// Middleware to verify JWT token and set req.user
+function authenticateToken(req, res, next) {
+  const token = req.cookies.token; // Get the token from the cookies
+  if (!token) return res.sendStatus(401); // Unauthorized if token is missing
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403); // Forbidden if token is invalid
+    req.user = user; // Set user information in req for future routes
+    next();
+  });
+}
+
+// Endpoint to get logged-in user information
+router.get("/me", authenticateToken, (req, res) => {
+  // Here, req.user contains the user info decoded from the JWT
+  db.query("SELECT id, username FROM users WHERE id = ?", [req.user.id], (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error", error: err });
+    if (results.length === 0) return res.status(404).json({ message: "User not found" });
+    res.json(results[0]); // Return user info
+  });
+});
+
 module.exports = router;

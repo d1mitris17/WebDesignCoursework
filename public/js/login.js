@@ -12,8 +12,11 @@ $(document).ready(function () {
       method: "POST",
       contentType: "application/json",
       data: JSON.stringify({ username, password }),
-      success: function (xhr) {
+      success: function () {
         alert("Login successful!");
+
+        loadUserDetails();
+
         window.location.href = "/"; // Redirect to homepage after login
       },
       error: function (xhr) {
@@ -21,4 +24,21 @@ $(document).ready(function () {
       },
     });
   });
+
+  function loadUserDetails() {
+    $.ajax({
+      url: "api/auth/me",
+      method: "GET",
+      success: function (user) {
+        console.log("Logged-in user:", user)
+
+        sessionStorage.setItem("userId", user.id);
+        sessionStorage.setItem("username", user.username);
+        
+      },
+      error: function () {
+        console.error("Faled to get information");
+      },
+    });
+  }
 });

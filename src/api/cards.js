@@ -2,18 +2,71 @@ const express = require("express");
 const router = express.Router();
 const mysql = require("mysql2/promise");
 const db = require("../db/setupDatabase"); // Import the database connection
+const { requireAuth } = require("./authMiddleware");
 
-// GET all cards in a specific collection for a user
-router.get("/api/collections/:user_id/cards", async (req, res) => {
+router.get("/collections", requireAuth, async (req, res) => {
   try {
-    const [cards] = await db.execute(
-      `SELECT c.id, c.name, c.description, c.image, cc.quantity, cc.condition, cc.date_acquired
+    const userId = req.user.id; // Access the authenticated user's ID
+
+    const [rows] = await db.query(
+      `SELECT 
+          c.id, 
+          c.name, 
+          c.card_type, 
+          c.set_name, 
+          c.card_number, 
+          c.rarity, 
+          c.release_date, 
+          c.image_url, 
+          cc.quantity, 
+          cc.condition, 
+          cc.date_acquired, 
+          ca.attribute, 
+          ca.value
        FROM cards c
        JOIN card_collections cc ON c.id = cc.card_id
-       WHERE cc.user_id = ?`,
-      [req.params.user_id]
+       LEFT JOIN card_attributes ca ON c.id = ca.card_id
+       WHERE cc.user_id = ?
+       ORDER BY c.id`,
+      [userId]
     );
-    res.json(cards);
+    console.log("Fetched rows:", rows); // Check the structure here
+
+    var formattedCards = [];
+    var cardMap = {};
+    
+    rows.forEach((row) => {
+      if (!cardMap[row.id]) {
+        // Create a new card entry if it doesn't exist in the map
+        cardMap[row.id] = {
+          id: row.id,
+          name: row.name,
+          card_type: row.card_type,
+          set_name: row.set_name,
+          card_number: row.card_number,
+          rarity: row.rarity,
+          release_date: row.release_date,
+          image_url: row.image_url,
+          quantity: row.quantity,
+          condition: row.condition,
+          date_acquired: row.date_acquired,
+          attributes: []
+        };
+        formattedCards.push(cardMap[row.id]);
+      }
+
+      // Add attribute if it exists
+      if (row.attribute) {
+        cardMap[row.id].attributes.push({
+          attribute: row.attribute,
+          value: row.value
+        });
+      }
+    });
+    
+    console.log("Fetched cards: ", formattedCards);
+    res.json(formattedCards);
+
   } catch (error) {
     console.error("Error fetching cards in collection:", error);
     res.status(500).json({ message: "Error fetching cards in collection" });

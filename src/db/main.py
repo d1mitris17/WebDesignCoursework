@@ -1,6 +1,7 @@
 import csv
 import mysql.connector # type: ignore
 
+
 # Database connection
 def connect_to_db():
     return mysql.connector.connect(
@@ -69,4 +70,4 @@ def readFile(file_path):
         print("Done")
 
 # Call the function with the path to your CSV file
-readFile('ALL English Pokémon Cards - Sheet1.csv')
+readFile("src/db/poke/pokemon.csv")

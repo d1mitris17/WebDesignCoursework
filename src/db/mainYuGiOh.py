@@ -95,4 +95,4 @@ def process_directory(directory_path):
     print("All files processed")
 
 # Call the function with the path to your directory
-process_directory('en/')
+process_directory('src/db/en')

@@ -2,13 +2,13 @@ $(document).ready(function () {
   console.log("Frontend JavaScript loaded.");
 
   $("#loginForm").on("submit", async function (e) {
-      e.preventDefault();
+    e.preventDefault();
 
-      const username = $("#loginUsername").val();
-      const password = $("#loginPassword").val();
+    const username = $("#loginUsername").val();
+    const password = $("#loginPassword").val();
 
-      $.ajax({
-      url: `api/auth/login`,
+    $.ajax({
+      url: `/api/auth/login`,
       method: "POST",
       contentType: "application/json",
       data: JSON.stringify({ username, password }),
@@ -20,7 +20,7 @@ $(document).ready(function () {
         window.location.href = "/"; // Redirect to homepage after login
       },
       error: function (xhr) {
-          $("#loginMessage").text(xhr.responseJSON.message).css("color", "red");
+        $("#loginMessage").text(xhr.responseJSON.message).css("color", "red");
       },
     });
   });
@@ -34,7 +34,7 @@ $(document).ready(function () {
 
         sessionStorage.setItem("userId", user.id);
         sessionStorage.setItem("username", user.username);
-        
+
       },
       error: function () {
         console.error("Faled to get information");

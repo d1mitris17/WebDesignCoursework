@@ -35,15 +35,9 @@ body {
 }
 
 .collection-selection-button{
-    background-color: #0c244c;
-    border: none;
-    font-size: 30px;
-    width: 49%;
     height: 20vh;
-    margin: 13vh 0px 0px 0px;
-    padding: 0px 0px 0px 0px;
-    
-    
+    border: none;
+    background-color: #d4cfd8;
 }
 .collection-selection-button img{
     width: 90%;
@@ -115,9 +109,7 @@ h3 {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 5px;
-    
-    
+    padding: 5px;   
 }
 .card img {
     max-width: 70%;               

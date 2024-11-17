@@ -1,0 +1,21 @@
+doctype html
+html(lang="en")
+  head
+    link(rel="stylesheet", href="css/style.css")
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Collections
+  body
+    a(href="/")
+      button#h1b WebCards
+    div#buttons
+      a(href="/")
+        button#homeButton.navButton Dashboard
+
+    div#collection-selection
+      div.card-grid
+        each collection in collections 
+          div.card
+            a(href="/cards-" + collection)
+              button.collection-selection-button
+                img(src="/images/" + collection + "-logo.png")

@@ -1,5 +1,7 @@
 require("dotenv").config();
 const express = require("express");
+const pug = require('pug');
+
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./api/auth");
@@ -32,16 +34,24 @@ app.get("/log-in", restrictAuth, (req, res) => {
 });
 
 // Protected pages - require login
-app.get("/collections", requireAuth, (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/collections.html"));
-});
+app.get("/collections", requireAuth, async (req, res) => {
 
-app.get("/pokemon", requireAuth, (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/pokemon.html"));
-});
+  // TODO: move to the top somewhere in finished version
+  //
+  // This allows us to make changes and see the result as
+  // the pug file is compiled for every visit.
 
-app.get("/yu-gi-oh", requireAuth, (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/yu-gi-oh.html"));
+  const compiledCollections = pug.compileFile(path.join(__dirname, "../public/collections.pug")); 
+
+  try {
+    const [rows] = await db.query('SELECT DISTINCT card_type FROM cards');
+    const collections = rows.map(row => row.card_type.toLowerCase())
+
+    res.send(compiledCollections({collections}));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error fetching collections" })
+  }
 });
 
 app.get("/settings", requireAuth, (req, res) => {

@@ -52,6 +52,10 @@ app.get("/my-cards/add-card", requireAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "../public/addCard.html"))
 })
 
+app.get("/my-cards/remove-card", requireAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/removeCard.html"))
+})
+
 // API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/cards", cardsRoutes);

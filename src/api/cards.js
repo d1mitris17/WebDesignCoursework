@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const mysql = require("mysql2/promise");
 const db = require("../db/database"); // Import the database connection
 const { requireAuth } = require("./authMiddleware");
 
-
-// gets all of the users cards
+// Get all cards in the user's collection
 router.get("/collections", requireAuth, async (req, res) => {
   try {
     const userId = req.user.id; // Access the authenticated user's ID
@@ -33,8 +31,9 @@ router.get("/collections", requireAuth, async (req, res) => {
       [userId]
     );
 
-    var formattedCards = [];
-    var cardMap = {};
+    // Group attributes for each card
+    const formattedCards = [];
+    const cardMap = {};
 
     rows.forEach((row) => {
       if (!cardMap[row.id]) {
@@ -73,13 +72,14 @@ router.get("/collections", requireAuth, async (req, res) => {
   }
 });
 
-// Endpoint to get all cards with optional search query
+// Get all cards with optional search and pagination
 router.get("/", requireAuth, async (req, res) => {
   try {
-    const limit = parseInt(req.query.limit) || 25;
-    const offset = parseInt(req.query.offset) || 0;
-    const search = req.query.search || ""; // Get the search term from the query parameters
+    const limit = parseInt(req.query.limit) || 25; // Pagination limit
+    const offset = parseInt(req.query.offset) || 0; // Pagination offset
+    const search = req.query.search || ""; // Search term
 
+    // Base SQL query
     let sqlQuery = `
       SELECT 
           c.id, 
@@ -98,18 +98,19 @@ router.get("/", requireAuth, async (req, res) => {
 
     const queryParams = [];
 
-    // If there's a search term, add it to the SQL query
+    // Add search filter if a search term is provided
     if (search) {
       sqlQuery += " WHERE c.name LIKE ?";
       queryParams.push(`%${search}%`);
     }
 
+    // Add ordering, limit, and offset
     sqlQuery += " ORDER BY c.id LIMIT ? OFFSET ?";
     queryParams.push(limit, offset);
 
     const [rows] = await db.query(sqlQuery, queryParams);
 
-    // Format the response as before, grouping attributes
+    // Format cards and group attributes
     const formattedCards = [];
     const cardMap = {};
 
@@ -124,7 +125,7 @@ router.get("/", requireAuth, async (req, res) => {
           rarity: row.rarity,
           release_date: row.release_date,
           image_url: row.image_url,
-          attributes: [],
+          attributes: []
         };
         formattedCards.push(cardMap[row.id]);
       }
@@ -132,7 +133,7 @@ router.get("/", requireAuth, async (req, res) => {
       if (row.attribute) {
         cardMap[row.id].attributes.push({
           attribute: row.attribute,
-          value: row.value,
+          value: row.value
         });
       }
     });
@@ -144,7 +145,7 @@ router.get("/", requireAuth, async (req, res) => {
   }
 });
 
-// Add card to user collection
+// Add a card to the user's collection
 router.post("/collections/:card_id", requireAuth, async (req, res) => {
   const userId = req.user.id;
   const cardId = req.params.card_id;
@@ -153,9 +154,9 @@ router.post("/collections/:card_id", requireAuth, async (req, res) => {
   try {
     await db.query(
       `INSERT INTO card_collections (user_id, card_id, quantity, \`condition\`, date_acquired) 
-            VALUES (?, ?, ?, ?, ?) 
-            ON DUPLICATE KEY UPDATE 
-            quantity = quantity + VALUES(quantity)`,
+       VALUES (?, ?, ?, ?, ?) 
+       ON DUPLICATE KEY UPDATE 
+       quantity = quantity + VALUES(quantity)`,
       [userId, cardId, quantity, condition, date_acquired]
     );
     res.status(201).json({ message: "Card added to collection" });

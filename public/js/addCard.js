@@ -15,7 +15,8 @@ $(document).ready(function () {
         offset += limit;
 
         // Show or hide the "Load More" button based on the results count
-        if (cards.length < limit) {
+        if (cards.length == 0) {
+          console.log("No more cards to load.");
           $("#loadMoreButton").hide();
         } else {
           $("#loadMoreButton").show();
@@ -59,7 +60,7 @@ $(document).ready(function () {
     offset = 0; // Reset offset to start fresh for new search term
     loadCards(); // Call loadCards with new search term
   });
-  
+
   // Show the add card modal with form when "Add" button is clicked
   $(document).on("click", ".addButton", function () {
     const cardId = $(this).data("id");

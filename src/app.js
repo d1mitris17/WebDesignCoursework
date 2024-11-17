@@ -36,6 +36,14 @@ app.get("/collections", requireAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "../public/collections.html"));
 });
 
+app.get("/pokemon", requireAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/pokemon.html"));
+});
+
+app.get("/yu-gi-oh", requireAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/yu-gi-oh.html"));
+});
+
 app.get("/settings", requireAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "../public/settings.html"));
 });

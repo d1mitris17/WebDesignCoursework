@@ -25,6 +25,36 @@ body {
     top: 0;
     left: 0;
 }
+ 
+#collection-selction{
+    font-size: 0;
+    font-family: "Helvetica";
+    position: relative;
+    top: 4vh;
+    left: 0; 
+}
+
+.collection-selection-button{
+    background-color: #0c244c;
+    border: none;
+    font-size: 30px;
+    width: 49%;
+    height: 20vh;
+    margin: 13vh 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    
+    
+}
+.collection-selection-button img{
+    width: 90%;
+    filter: grayscale(100%);
+    align-items: center;
+}
+
+.collection-selection-button:hover img{
+    filter: grayscale(100%) blur(5px);
+}
+
 .navButton {
     background-color: #bf0d3e;
     border: none;

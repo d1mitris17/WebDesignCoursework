@@ -32,11 +32,10 @@ router.get("/collections", requireAuth, async (req, res) => {
        ORDER BY c.id`,
       [userId]
     );
-    console.log("Fetched rows:", rows); // Check the structure here
 
     var formattedCards = [];
     var cardMap = {};
-    
+
     rows.forEach((row) => {
       if (!cardMap[row.id]) {
         // Create a new card entry if it doesn't exist in the map
@@ -65,8 +64,7 @@ router.get("/collections", requireAuth, async (req, res) => {
         });
       }
     });
-    
-    console.log("Fetched cards: ", formattedCards);
+
     res.json(formattedCards);
 
   } catch (error) {
@@ -97,7 +95,7 @@ router.get("/", requireAuth, async (req, res) => {
       FROM cards c
       LEFT JOIN card_attributes ca ON c.id = ca.card_id
     `;
-    
+
     const queryParams = [];
 
     // If there's a search term, add it to the SQL query
@@ -148,23 +146,23 @@ router.get("/", requireAuth, async (req, res) => {
 
 // Add card to user collection
 router.post("/collections/:card_id", requireAuth, async (req, res) => {
-    const userId = req.user.id;
-    const cardId = req.params.card_id;
-    const { condition, date_acquired, quantity } = req.body;
+  const userId = req.user.id;
+  const cardId = req.params.card_id;
+  const { condition, date_acquired, quantity } = req.body;
 
-    try {
-        await db.query(
-            `INSERT INTO card_collections (user_id, card_id, quantity, \`condition\`, date_acquired) 
+  try {
+    await db.query(
+      `INSERT INTO card_collections (user_id, card_id, quantity, \`condition\`, date_acquired) 
             VALUES (?, ?, ?, ?, ?) 
             ON DUPLICATE KEY UPDATE 
             quantity = quantity + VALUES(quantity)`,
-            [userId, cardId, quantity, condition, date_acquired]
-        );
-        res.status(201).json({ message: "Card added to collection" });
-    } catch (error) {
-        console.error("Error adding card to collection:", error);
-        res.status(500).json({ message: "Error adding card to collection" });
-    }
+      [userId, cardId, quantity, condition, date_acquired]
+    );
+    res.status(201).json({ message: "Card added to collection" });
+  } catch (error) {
+    console.error("Error adding card to collection:", error);
+    res.status(500).json({ message: "Error adding card to collection" });
+  }
 });
 
 module.exports = router;

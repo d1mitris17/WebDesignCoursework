@@ -358,18 +358,16 @@ button:hover {
 }
 
 .collection-card img{
-    background-color: #d4cfd8;
+    
     border-radius: 4px;
     overflow: hidden;
     transition: transform 0.2s ease;
-    display: flex;
+    display: flex; 
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    padding: 5px;   
-    margin-top: 2px;
-    width: 20vw;
+    text-align: center;   
+    width: 23vw;
     filter: grayscale(100%);
     
 }
@@ -378,7 +376,7 @@ button:hover {
     display: grid;
     grid-template-columns: repeat(3,1fr);
     gap: 5px;
-    padding: 10px 250px 10px 250px; 
-    margin-top: 5px;
+    padding: 10px 250px 10px 160px; 
+    margin-top: 100px;
     
 }

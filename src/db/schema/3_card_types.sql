@@ -2,3 +2,8 @@ CREATE TABLE IF NOT EXISTS card_types (
     type_id INT AUTO_INCREMENT PRIMARY KEY,
     type VARCHAR(50) UNIQUE NOT NULL
 );
+
+INSERT INTO card_types (type)
+SELECT DISTINCT card_type
+FROM cards
+ON DUPLICATE KEY UPDATE type = VALUES(type);

@@ -10,7 +10,7 @@ body.login-page {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #0c244c; /* Maintain your login page background */
+    background-color: #0c244c; 
     margin: 0;
 }
 
@@ -19,7 +19,7 @@ body.signup-page {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #0c244c; /* Consistent background color */
+    background-color: #0c244c; 
     margin: 0;
     font-family: "Helvetica", sans-serif;
 }
@@ -297,6 +297,7 @@ button:hover {
     width: 100%;
     max-width: 400px;
     text-align: center;
+
 }
 
 /* Headers for signup */

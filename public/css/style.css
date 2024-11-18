@@ -305,3 +305,53 @@ button:hover {
     margin-bottom: 20px;
     color: #333333;
 }
+   
+
+.addButton{
+    background-color: #bf0d3e;
+    color: #d4cfd8;
+    font-weight: bold;
+    width: 5vw;
+    text-align: center;
+    margin: 10px 0px 5px 0px;
+    transition-duration: all 0.4s;
+    border: 2px solid #bf0d3e;
+}
+
+.addButton:hover{
+    background-color: #d4cfd8;
+    color: #bf0d3e;
+    font-style: italic;
+    
+
+}
+
+#cardTypeFilter{
+    background-color: #bf0d3e;
+    color: #d4cfd8;
+    border: none;
+    width: 10vw;
+    height: 4vh;
+    margin: none;
+}
+
+#searchBar{
+    background-color: #d4cfd8;
+    color: #333;
+    width: 10vw;
+    height: 4vh;
+    border: none;
+    margin: none;
+    padding: 3px;
+}
+
+#personalCollectionHeader{
+    color:#d4cfd8;
+    text-align: center;
+}
+
+#collection-title{
+    color: #d4cfd8;
+    text-align: center;
+    margin-top: 20px;
+}

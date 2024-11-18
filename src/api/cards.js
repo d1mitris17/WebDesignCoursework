@@ -3,13 +3,15 @@ const router = express.Router();
 const db = require("../db/database"); // Import the database connection
 const { requireAuth } = require("./authMiddleware");
 
-// Get all cards in the user's collection
+// Get all cards in the user's collection with optional card type filtering
 router.get("/collections", requireAuth, async (req, res) => {
   try {
     const userId = req.user.id; // Access the authenticated user's ID
+    const cardType = req.query.card_type; // Optional card type filter from query parameters
 
-    const [rows] = await db.query(
-      `SELECT 
+    // Build the SQL query dynamically based on the card type
+    let sqlQuery = `
+      SELECT 
           c.id, 
           c.name, 
           c.card_type, 
@@ -23,13 +25,23 @@ router.get("/collections", requireAuth, async (req, res) => {
           cc.date_acquired, 
           ca.attribute, 
           ca.value
-       FROM cards c
-       JOIN card_collections cc ON c.id = cc.card_id
-       LEFT JOIN card_attributes ca ON c.id = ca.card_id
-       WHERE cc.user_id = ?
-       ORDER BY c.id`,
-      [userId]
-    );
+      FROM cards c
+      JOIN card_collections cc ON c.id = cc.card_id
+      LEFT JOIN card_attributes ca ON c.id = ca.card_id
+      WHERE cc.user_id = ?
+    `;
+
+    const queryParams = [userId];
+
+    // If cardType is specified, add it to the query
+    if (cardType) {
+      sqlQuery += " AND c.card_type = ?";
+      queryParams.push(cardType);
+    }
+
+    sqlQuery += " ORDER BY c.id";
+
+    const [rows] = await db.query(sqlQuery, queryParams);
 
     // Group attributes for each card
     const formattedCards = [];
@@ -50,7 +62,7 @@ router.get("/collections", requireAuth, async (req, res) => {
           quantity: row.quantity,
           condition: row.condition,
           date_acquired: row.date_acquired,
-          attributes: []
+          attributes: [],
         };
         formattedCards.push(cardMap[row.id]);
       }
@@ -59,25 +71,25 @@ router.get("/collections", requireAuth, async (req, res) => {
       if (row.attribute) {
         cardMap[row.id].attributes.push({
           attribute: row.attribute,
-          value: row.value
+          value: row.value,
         });
       }
     });
 
     res.json(formattedCards);
-
   } catch (error) {
     console.error("Error fetching cards in collection:", error);
     res.status(500).json({ message: "Error fetching cards in collection" });
   }
 });
 
-// Get all cards with optional search and pagination
+// Get all cards with optional search, pagination, and card type filtering
 router.get("/", requireAuth, async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 25; // Pagination limit
     const offset = parseInt(req.query.offset) || 0; // Pagination offset
     const search = req.query.search || ""; // Search term
+    const cardType = req.query.card_type; // Optional card type filter
 
     // Base SQL query
     let sqlQuery = `
@@ -98,10 +110,20 @@ router.get("/", requireAuth, async (req, res) => {
 
     const queryParams = [];
 
-    // Add search filter if a search term is provided
-    if (search) {
-      sqlQuery += " WHERE c.name LIKE ?";
-      queryParams.push(`%${search}%`);
+    // Add WHERE clause if search or card type is provided
+    if (search || cardType) {
+      sqlQuery += " WHERE";
+
+      if (search) {
+        sqlQuery += " c.name LIKE ?";
+        queryParams.push(`%${search}%`);
+      }
+
+      if (cardType) {
+        if (search) sqlQuery += " AND";
+        sqlQuery += " c.card_type = ?";
+        queryParams.push(cardType);
+      }
     }
 
     // Add ordering, limit, and offset
@@ -125,7 +147,7 @@ router.get("/", requireAuth, async (req, res) => {
           rarity: row.rarity,
           release_date: row.release_date,
           image_url: row.image_url,
-          attributes: []
+          attributes: [],
         };
         formattedCards.push(cardMap[row.id]);
       }
@@ -133,7 +155,7 @@ router.get("/", requireAuth, async (req, res) => {
       if (row.attribute) {
         cardMap[row.id].attributes.push({
           attribute: row.attribute,
-          value: row.value
+          value: row.value,
         });
       }
     });
@@ -142,52 +164,6 @@ router.get("/", requireAuth, async (req, res) => {
   } catch (error) {
     console.error("Error fetching cards with attributes:", error);
     res.status(500).json({ message: "Error fetching cards with attributes" });
-  }
-});
-
-// Add a card to the user's collection
-router.post("/collections/:card_id", requireAuth, async (req, res) => {
-  const userId = req.user.id;
-  const cardId = req.params.card_id;
-  const { condition, date_acquired, quantity } = req.body;
-
-  try {
-    await db.query(
-      `INSERT INTO card_collections (user_id, card_id, quantity, \`condition\`, date_acquired) 
-       VALUES (?, ?, ?, ?, ?) 
-       ON DUPLICATE KEY UPDATE 
-       quantity = quantity + VALUES(quantity)`,
-      [userId, cardId, quantity, condition, date_acquired]
-    );
-    res.status(201).json({ message: "Card added to collection" });
-  } catch (error) {
-    console.error("Error adding card to collection:", error);
-    res.status(500).json({ message: "Error adding card to collection" });
-  }
-});
-
-// Delete a card from the user's collection
-router.delete("/collections/:card_id", requireAuth, async (req, res) => {
-  const userId = req.user.id; // Authenticated user's ID
-  const cardId = req.params.card_id; // ID of the card to delete
-
-  try {
-    // Delete the card from the user's collection
-    const [result] = await db.query(
-      `DELETE FROM card_collections 
-       WHERE user_id = ? AND card_id = ?`,
-      [userId, cardId]
-    );
-
-    // Check if the card was successfully deleted
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Card not found in collection" });
-    }
-
-    res.status(200).json({ message: "Card deleted from collection" });
-  } catch (error) {
-    console.error("Error deleting card from collection:", error);
-    res.status(500).json({ message: "Error deleting card from collection" });
   }
 });
 

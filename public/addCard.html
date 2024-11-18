@@ -7,12 +7,47 @@
     <title>Add Card to Collection</title>
 </head>
 <body>
+
+    <a href= "/">
+        <button id = "h1b">WebCards</button>
+    </a>
+    <div id = "buttons">
+        <a href= "/collections">
+        <button id = "collectionButton" class = "navButton">Collections</button>
+        </a>
+        <a href= "/my-cards">
+        <button id = "myCardsButton" class = "navButton">My Cards</button>
+        </a>
+        <a href= "/my-profile">
+        <button id = "profileButton" class = "navButton">My Profile</button>
+        </a>
+        <a href= "/sign-up">
+        <button id = "signOutButton" class = "navButton">Sign Out</button>
+        </a>
+        
+    </div>
+    
     <h1>Add a Card to Your Collection</h1>
+
+    <!-- Dropdown to filter by card type -->
+    <select id="cardTypeFilter">
+        <option value="all">All</option>
+        <option value="Pokémon">Pokémon</option>
+        <option value="Yu-Gi-Oh">Yu-Gi-Oh</option>
+    </select>
+
+    <!-- Search bar -->
     <input type="text" id="searchBar" placeholder="Search cards..." />
+    
+    <!-- Container for cards -->
     <div id="allCardsContainer"></div>
+    
+    <!-- Load More button -->
     <button id="loadMoreButton">Load More</button>
+    
     <!-- Modal for adding card details -->
     <div id="addCardModal" style="display: none;">
+        <span id="closeModalButton">&times;</span>
         <h2>Add Card Details</h2>
         <form id="addCardForm">
             <input type="hidden" id="selectedCardId" />

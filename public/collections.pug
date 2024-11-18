@@ -22,8 +22,8 @@ html(lang="en")
         if collections.length
           each collection in collections 
             div.card
-              a(href="/cards-" + collection)
+              a(href=(collection === "all" ? "/cards" : `/cards?card_type=${collection}`))
                 button.collection-selection-button(aria-label="View " + collection + " cards")
-                  img(src="/images/" + collection + "-logo.png", alt=collection + " logo")
+                  img(src=(collection === "all" ? "/images/all-logo.png" : "/images/" + collection + "-logo.png"), alt=(collection === "all" ? "All Cards logo" : collection + " logo"))
         else
           p No collections available at this time. Please add some collections.

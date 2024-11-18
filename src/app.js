@@ -38,14 +38,13 @@ app.get("/sign-up", restrictAuth, staticPage("../public/signup.html"));
 app.get("/log-in", restrictAuth, staticPage("../public/login.html"));
 
 // Protected pages - require login
-// Protected pages - require login
 app.get("/collections", requireAuth, async (req, res, next) => {
   try {
     // Fetch card types directly from the card_types table
     const [rows] = await db.query("SELECT type FROM card_types");
 
-    // Map the rows to a list of types
-    const collections = rows.map(row => row.type.toLowerCase());
+    // Map the rows to a list of types and add "All Cards" at the beginning
+    const collections = ["all", ...rows.map(row => row.type.toLowerCase())];
 
     // Render the collections using the precompiled Pug template
     res.send(compiledCollections({ collections }));
@@ -58,7 +57,7 @@ app.get("/collections", requireAuth, async (req, res, next) => {
 app.get("/settings", requireAuth, staticPage("../public/settings.html"));
 app.get("/my-profile", requireAuth, staticPage("../public/myProfile.html"));
 app.get("/my-cards", requireAuth, staticPage("../public/myCards.html"));
-app.get("/my-cards/add", requireAuth, staticPage("../public/addCard.html"));
+app.get("/cards", requireAuth, staticPage("../public/addCard.html"));
 app.get("/my-cards/remove", requireAuth, staticPage("../public/removeCard.html"));
 
 // API routes

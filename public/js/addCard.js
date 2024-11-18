@@ -3,20 +3,41 @@ $(document).ready(function () {
   const limit = 25;
   let searchTerm = "";
 
-  // Function to load cards with optional search
+  // Get card type from the URL query parameter (default to "all")
+  const urlParams = new URLSearchParams(window.location.search);
+  let selectedCardType = urlParams.get("card_type") || "all";
+
+  // Function to load cards with current filters
   function loadCards() {
+    const queryParams = new URLSearchParams({
+      limit: limit,
+      offset: offset,
+    });
+
+    // Add search term if provided
+    if (searchTerm) {
+      queryParams.append("search", searchTerm);
+    }
+
+    // Add card type filter if not "all"
+    if (selectedCardType !== "all") {
+      queryParams.append("card_type", selectedCardType);
+    }
+
     $.ajax({
-      url: `/api/cards?limit=${limit}&offset=${offset}&search=${encodeURIComponent(searchTerm)}`,
+      url: `/api/cards?${queryParams.toString()}`,
       method: "GET",
       dataType: "json",
       success: function (cards) {
-        if (offset === 0) $("#allCardsContainer").empty(); // Clear previous results if starting fresh
-        displayCards(cards);
-        offset += limit;
+        if (offset === 0) {
+          $("#allCardsContainer").empty(); // Clear previous results if starting fresh
+        }
 
-        // Show or hide the "Load More" button based on the results count
-        if (cards.length == 0) {
-          console.log("No more cards to load.");
+        // Render the fetched cards
+        displayCards(cards);
+
+        // Show or hide the "Load More" button
+        if (cards.length === 0) {
           $("#loadMoreButton").hide();
         } else {
           $("#loadMoreButton").show();
@@ -28,7 +49,7 @@ $(document).ready(function () {
     });
   }
 
-  // Function to display the fetched cards
+  // Function to render cards
   function displayCards(cards) {
     const cardContainer = $("#allCardsContainer");
 
@@ -41,7 +62,7 @@ $(document).ready(function () {
           <p><strong>Number:</strong> ${card.card_number}</p>
           <p><strong>Rarity:</strong> ${card.rarity}</p>
           <p><strong>Release Date:</strong> ${card.release_date || 'Unknown'}</p>
-          <button class="addButton" data-id="${card.id}">Add</button> <!-- Add button for each card -->
+          <button class="addButton" data-id="${card.id}">Add</button>
         </div>
       `);
 
@@ -49,54 +70,37 @@ $(document).ready(function () {
     });
   }
 
-  // Load more button click event
-  $("#loadMoreButton").on("click", function () {
+  // Event: Search bar input
+  $("#searchBar").on("input", function () {
+    searchTerm = $(this).val();
+    offset = 0; // Reset offset for new search
     loadCards();
   });
 
-  // Search functionality
-  $("#searchBar").on("input", function () {
-    searchTerm = $(this).val();
-    offset = 0; // Reset offset to start fresh for new search term
-    loadCards(); // Call loadCards with new search term
+  // Event: Filter by card type
+  $("#cardTypeFilter").on("change", function () {
+    selectedCardType = $(this).val();
+    offset = 0; // Reset offset for new filter
+    loadCards();
   });
 
-  // Show the add card modal with form when "Add" button is clicked
+  // Event: Load more cards
+  $("#loadMoreButton").on("click", function () {
+    offset += limit; // Increment offset for pagination
+    loadCards();
+  });
+
+  // Event: Show modal when "Add" button is clicked
   $(document).on("click", ".addButton", function () {
     const cardId = $(this).data("id");
-    console.log("button clicked on: ", cardId);
     $("#selectedCardId").val(cardId); // Store the selected card ID in the hidden input
-    $("#addCardModal").show(); // Display the modal
+    $("#addCardModal").fadeIn(); // Show the modal with a fade-in effect
   });
 
-  // Submit the form to add card to collection
-  $("#addCardForm").on("submit", function (e) {
-    e.preventDefault();
-
-    const cardId = $("#selectedCardId").val();
-    const condition = $("#cardCondition").val();
-    const dateAcquired = $("#cardDateAcquired").val();
-    const quantity = $("#cardQuantity").val();
-
-    $.ajax({
-      url: `/api/cards/collections/${cardId}`,
-      method: "POST",
-      contentType: "application/json",
-      data: JSON.stringify({ condition, date_acquired: dateAcquired, quantity }),
-      success: function () {
-        alert("Card added to your collection!");
-        $("#addCardModal").hide();
-      },
-      error: function () {
-        alert("Failed to add card to collection.");
-      }
-    });
-  });
-
-  // Close modal on background click
+  // Event: Hide modal when clicking outside or on close button
   $(window).on("click", function (event) {
-    if ($(event.target).is("#addCardModal")) {
-      $("#addCardModal").hide();
+    if ($(event.target).is("#addCardModal") || $(event.target).is("#closeModalButton")) {
+      $("#addCardModal").fadeOut(); // Hide the modal with a fade-out effect
     }
   });
 

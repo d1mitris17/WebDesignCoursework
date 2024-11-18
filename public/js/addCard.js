@@ -104,6 +104,50 @@ $(document).ready(function () {
     }
   });
 
+ // Event: Add card to user's collection
+ $("#addCardForm").on("submit", function (event) {
+  event.preventDefault();
+
+  const cardId = $("#selectedCardId").val();
+  const cardCondition = $("#cardCondition").val();
+  const dateAcquired = $("#cardDateAcquired").val();
+  const quantity = $("#cardQuantity").val();
+
+  // Validate inputs
+  if (!cardId || !cardCondition || !dateAcquired || quantity <= 0) {
+    alert("Please fill out all fields correctly.");
+    return;
+  }
+
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!dateRegex.test(dateAcquired)) {
+    alert("Please provide a valid date in the format YYYY-MM-DD.");
+    return;
+  }
+
+  $.ajax({
+    url: "/api/cards/collection/add",
+    method: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({
+      cardId: cardId,
+      quantity: quantity,
+      condition: cardCondition,
+      dateAcquired: dateAcquired,
+    }),
+    success: function (response) {
+      alert("Card added successfully!");
+      $("#addCardModal").fadeOut(); // Hide the modal
+      // Optionally reset the form
+      $("#addCardForm")[0].reset();
+    },
+    error: function (xhr) {
+      const errorMessage = xhr.responseJSON?.message || "Failed to add card. Please try again.";
+      alert(errorMessage);
+    },
+  });
+});
+
   // Initial load
   loadCards();
 });

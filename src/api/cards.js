@@ -167,4 +167,34 @@ router.get("/", requireAuth, async (req, res) => {
   }
 });
 
+// Add a card to a user's Collection
+// Add a card to the user's collection
+router.post("/collection/add", requireAuth, async (req, res) => {
+  const userId = req.user.id; // Get the user ID from the decoded JWT
+  const { cardId, quantity, condition, dateAcquired } = req.body;
+
+  try {
+    // Validate inputs
+    if (!cardId || quantity <= 0 || !condition || !Date.parse(dateAcquired)) {
+      return res.status(400).json({ message: "Invalid input data" });
+    }
+
+    // Insert or update the card in the user's collection
+    await db.query(
+      `INSERT INTO card_collections (user_id, card_id, quantity, \`condition\`, date_acquired)
+       VALUES (?, ?, ?, ?, ?)
+       ON DUPLICATE KEY UPDATE 
+       quantity = quantity + VALUES(quantity),
+       \`condition\` = VALUES(\`condition\`),
+       date_acquired = VALUES(date_acquired)`,
+      [userId, cardId, quantity, condition, dateAcquired]
+    );
+
+    res.status(201).json({ message: "Card successfully added to the collection." });
+  } catch (error) {
+    console.error("Error adding card to collection:", error);
+    res.status(500).json({ message: "Failed to add card to the collection." });
+  }
+});
+
 module.exports = router;

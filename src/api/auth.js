@@ -20,7 +20,7 @@ router.post("/signup", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Insert new user into database
-    await db.query("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", 
+    await db.query("INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
       [username, email, hashedPassword]
     );
 
@@ -52,6 +52,8 @@ router.post("/login", async (req, res) => {
     if (!match) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
+
+    await db.query("INSERT INTO card_types (type) SELECT DISTINCT card_type FROM cards ON DUPLICATE KEY UPDATE type = VALUES(type)");
 
     // Generate JWT with user ID in the payload
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
@@ -97,7 +99,7 @@ router.get("/me", authenticateToken, async (req, res) => {
     // Here, req.user contains the user info decoded from the JWT
     const [results] = await db.query("SELECT id, username FROM users WHERE id = ?", [req.user.id]);
     if (results.length === 0) return res.status(404).json({ message: "User not found" });
-    
+
     res.json(results[0]); // Return user info
   } catch (error) {
     console.error("Database error:", error);

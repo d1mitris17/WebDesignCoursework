@@ -118,9 +118,9 @@ h3 {
 
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap: 5px;
-    padding: 10px 250px 10px 250px; 
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 10px; 
     
 }
 

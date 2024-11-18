@@ -57,7 +57,7 @@ app.get("/collections", requireAuth, async (req, res, next) => {
 app.get("/settings", requireAuth, staticPage("../public/settings.html"));
 app.get("/my-profile", requireAuth, staticPage("../public/myProfile.html"));
 app.get("/my-cards", requireAuth, staticPage("../public/myCards.html"));
-app.get("/cards", requireAuth, staticPage("../public/addCard.html"));
+app.get("/collections/cards", requireAuth, staticPage("../public/addCard.html"));
 app.get("/my-cards/remove", requireAuth, staticPage("../public/removeCard.html"));
 
 // API routes

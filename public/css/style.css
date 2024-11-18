@@ -14,6 +14,16 @@ body.login-page {
     margin: 0;
 }
 
+body.signup-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #0c244c; /* Consistent background color */
+    margin: 0;
+    font-family: "Helvetica", sans-serif;
+}
+
 #h1b {
     color: #bf0d3e;
     background-color: #d4cfd8;
@@ -186,7 +196,7 @@ h3 {
     text-align: center; 
   }
 
-  body, h2, p, input, button, a {
+  h2, p, input, button, a {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
@@ -272,3 +282,20 @@ button:hover {
 .signup-link a:hover {
     text-decoration: underline;
 } 
+
+.signup-container {
+    background-color: #ffffff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Headers for signup */
+.signup-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333333;
+}

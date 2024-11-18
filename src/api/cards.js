@@ -166,4 +166,29 @@ router.post("/collections/:card_id", requireAuth, async (req, res) => {
   }
 });
 
+// Delete a card from the user's collection
+router.delete("/collections/:card_id", requireAuth, async (req, res) => {
+  const userId = req.user.id; // Authenticated user's ID
+  const cardId = req.params.card_id; // ID of the card to delete
+
+  try {
+    // Delete the card from the user's collection
+    const [result] = await db.query(
+      `DELETE FROM card_collections 
+       WHERE user_id = ? AND card_id = ?`,
+      [userId, cardId]
+    );
+
+    // Check if the card was successfully deleted
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Card not found in collection" });
+    }
+
+    res.status(200).json({ message: "Card deleted from collection" });
+  } catch (error) {
+    console.error("Error deleting card from collection:", error);
+    res.status(500).json({ message: "Error deleting card from collection" });
+  }
+});
+
 module.exports = router;

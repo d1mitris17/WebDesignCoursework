@@ -1,37 +1,36 @@
 $(document).ready(function () {
-  console.log("Loaded cards JS");
-  // Function to fetch cards for a specific collection
+  let selectedCardId = null; // To track the card being deleted
+
+  // Function to fetch cards
   function fetchCards() {
     $.ajax({
-      url: `/api/cards/collections`, // Adjust collectionId as needed
+      url: `/api/cards/collections`,
       method: "GET",
       dataType: "json",
       success: function (cards) {
         displayCards(cards);
       },
-      error: function (xhr, status, error) {
-        console.error("Error fetching cards:", error);
+      error: function () {
         $("#cardContainer").html("<p>Unable to load cards. Please try again later.</p>");
-      }
+      },
     });
   }
 
-  // Function to display the fetched cards
+  // Function to display cards
   function displayCards(cards) {
     const cardContainer = $("#cardContainer");
-    cardContainer.empty(); // Clear any existing content
+    cardContainer.empty();
 
-    // Check if there are any cards to display
     if (cards.length === 0) {
       cardContainer.html("<p>No cards available in this collection.</p>");
       return;
     }
 
-    // Iterate through each card and create HTML elements
-    cards.forEach(card => {
+    cards.forEach((card) => {
       const cardElement = $(`
         <div class="card">
-          <img src="${card.image_url}" alt="${card.name}" />
+          <button class="deleteButton" data-id="${card.id}" style="display: none;">&times;</button>
+        <img src="${card.image_url || '../images//default-image.jpeg'}" alt="${card.name || 'Card'}" />
           <h2>${card.name}</h2>
           <p><strong>Type:</strong> ${card.card_type}</p>
           <p><strong>Set:</strong> ${card.set_name}</p>
@@ -40,11 +39,48 @@ $(document).ready(function () {
           <p><strong>Release Date:</strong> ${card.release_date}</p>
         </div>
       `);
-
       cardContainer.append(cardElement);
     });
   }
 
+  // Show delete buttons
+  $("#removeCard").on("click", function () {
+    $(".deleteButton").fadeIn();
+  });
+
+  // Show confirmation modal
+  $(document).on("click", ".deleteButton", function () {
+    selectedCardId = $(this).data("id");
+    $("#deleteCard").fadeIn();
+  });
+
+  // Cancel delete
+  $("#no").on("click", function (event) {
+    event.preventDefault();
+    $("#deleteCard").fadeOut();
+  });
+
+  // Confirm delete
+  $("#yes").on("click", function (event) {
+    event.preventDefault();
+    $("#deleteCard").fadeOut();
+
+    // Call API to delete card
+    $.ajax({
+      url: `/api/cards/delete`,
+      method: "POST",
+      contentType: "application/json",
+      data: JSON.stringify({ cardid: selectedCardId }),
+      success: function () {
+        alert(`Card deleted successfully!`);
+        fetchCards(); // Reload cards
+      },
+      error: function () {
+        alert(`Failed to delete the card. Please try again.`);
+      },
+    });
+  });
+
+  // Initial fetch
   fetchCards();
 });
-

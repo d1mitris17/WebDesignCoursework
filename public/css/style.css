@@ -387,7 +387,6 @@ button:hover {
     padding: 0;
 }
 
-<<<<<<< HEAD
 /* General styles for the popup */
 #deletCard {
   position: fixed;
@@ -443,8 +442,6 @@ button:hover {
   background-color: #a71d2a;
 }
 
-
-=======
 .myCard-card-grid {
     display: grid;
     grid-template-columns: repeat(3,1fr);
@@ -452,4 +449,3 @@ button:hover {
     padding: 10px 250px 10px 160px; 
     margin-top: 100px;
 }
->>>>>>> 4054a9ca272a7f2bb4b9c30c3a471e864d1a99a0

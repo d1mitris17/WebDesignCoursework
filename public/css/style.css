@@ -387,6 +387,61 @@ button:hover {
     padding: 0;
 }
 
+/* General styles for the popup */
+#deletCard {
+  position: fixed;
+  z-index: 1000; /* Ensure it is on top of other content */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  display: flex; /* Flexbox for centering */
+}
+
+/* Popup content */
+#deletCard form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+/* Heading styles */
+#deletCard h1 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Button styles */
+#deletCard button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin: 0 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#deletCard button:hover {
+  background-color: #0056b3;
+}
+
+#deletCard button#no {
+  background-color: #dc3545;
+}
+
+#deletCard button#no:hover {
+  background-color: #a71d2a;
+}
+
 .myCard-card-grid {
     display: grid;
     grid-template-columns: repeat(3,1fr);

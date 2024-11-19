@@ -197,4 +197,22 @@ router.post("/collection/add", requireAuth, async (req, res) => {
   }
 });
 
+router.post("/delete", requireAuth, async (req, res) => {
+  const { cardid } = req.body; // Card ID to delete
+  const userId = req.user.id; // Get the user ID from the decoded JWT
+
+  try {
+    if (!cardid) {
+      return res.status(400).json({ message: "Card ID is required." });
+    }
+    console.log("Deleting card:", cardid);
+    console.log("User ID:", userId);
+    await db.query("DELETE FROM card_collections WHERE card_id = ? AND user_id = ?", [cardid, userId]);
+    res.status(200).json({ message: "Card deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting card:", error);
+    res.status(500).json({ message: "Failed to delete card." });
+  }
+});
+
 module.exports = router;

@@ -30,7 +30,7 @@ $(document).ready(function () {
       const cardElement = $(`
         <div class="card">
           <button class="deleteButton" data-id="${card.id}" style="display: none;">&times;</button>
-        <img src="${card.image_url || '../images//default-image.jpeg'}" alt="${card.name || 'Card'}" />
+        
           <h2>${card.name}</h2>
           <p><strong>Type:</strong> ${card.card_type}</p>
           <p><strong>Set:</strong> ${card.set_name}</p>

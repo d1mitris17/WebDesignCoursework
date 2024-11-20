@@ -539,3 +539,62 @@ button:hover {
     margin: 100px 5px 5px 5px;
    
 }
+
+/* Profile Page Styles */
+#profile-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #d4cfd8; /* Mid blue */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: #0c244c;
+}
+
+#profile-container h1 {
+    font-size: 2rem;
+    color: #0c244c; /* Kind of white */
+    margin-bottom: 20px;
+}
+/* Input Fields */
+#user-details label {
+    font-size: 1.2rem;
+    color: #0c244c; /* Kind of white */
+    display: block;
+    margin: 10px 0 5px;
+}
+#password-details label {
+    font-size: 1.2rem;
+    color: #0c244c; /* Kind of white */
+    display: block;
+    margin: 10px 0 5px;
+}
+#password-details input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    border: 1px solid #2775f6; /* Light blue */
+    border-radius: 5px;
+    background-color: #d4cfd8; /* Kind of white */
+    color: #0c244c; /* Dark blue */
+    transition: border-color 0.3s ease;
+}
+
+#user-details input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    border: 1px solid #2775f6; /* Light blue */
+    border-radius: 5px;
+    background-color: #d4cfd8; /* Kind of white */
+    color: #0c244c; /* Dark blue */
+    transition: border-color 0.3s ease;
+}
+
+#user-details input:focus {
+    outline: none;
+    border-color: #bf0d3e; /* Red */
+}

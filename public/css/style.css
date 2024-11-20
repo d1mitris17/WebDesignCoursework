@@ -36,9 +36,9 @@ body.login-page, body.signup-page {
     border: none;
     color: #d4cfd8;
     font-size: 30px;
-    width: 24%;
+    width: 25%;
     height: 8vh;
-    margin: 0;
+    margin: 0px 0px 0px 0px;
     font-weight: bold;
     border-radius: 0;
     transition: all 0.3s ease;
@@ -48,6 +48,14 @@ body.login-page, body.signup-page {
     background-color: #d4cfd8;
     color: #bf0d3e;
     font-style: italic;
+}
+
+#buttons{
+    font-size: 0;
+    font-family: "Helvetica";
+    position: sticky;
+    top: 0;
+    left: 0;
 }
 
 /* Header Text */

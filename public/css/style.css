@@ -191,13 +191,12 @@ h3 {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5); /* Black background with transparency */
-    
     align-content: center;
   }
   .modal-content{
     padding: 20px;
     width: 50%;
-    margin-left: 25%;
+    margin-left: 24%;
     background-color: #0c244c;
     color: #d4cfd8;
     border-radius: 10px;

@@ -66,8 +66,10 @@ $(document).ready(function () {
         </div>
       `);
 
-      cardElement.on("click", function () {
-        showCardDetails(card);
+      cardElement.on("click", function (event) {
+        if (!$(event.target).is(".addButton")) {
+          showCardDetails(card);
+        }
       });
 
       cardContainer.append(cardElement);
@@ -103,8 +105,14 @@ $(document).ready(function () {
 
   // Event: Hide modal when clicking outside or on close button
   $(window).on("click", function (event) {
-    if ($(event.target).is("#addCardModal") || $(event.target).is("#closeModalButton")) {
+    if ($(event.target).is("#addCardModal")) {
       $("#addCardModal").fadeOut(); // Hide the modal with a fade-out effect
+    }
+
+    if ($(event.target).is("#cardDetailsModal")) {
+      $("#cardDetailsModal").fadeOut(function () {
+        $(this).remove(); // Remove modal from DOM
+      });
     }
   });
 

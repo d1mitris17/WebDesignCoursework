@@ -1,36 +1,77 @@
-/* General Styles */
 body {
-    background-color: #0c244c; /* Dark blue */
+    background-color: #0c244c;
     font-size: 100%;
-    margin: 0;
-    font-family: "Helvetica", sans-serif;
-    color: #d4cfd8; /* Kind of white */
+    margin: 0px 0px 0px 0px;
+    font-family: "Helvetica";
 }
 
-/* Centered Pages */
-body.login-page, body.signup-page {
+body.login-page {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background-color: #0c244c; 
+    margin: 0;
 }
 
-/* Header Button */
+body.signup-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #0c244c; 
+    margin: 0;
+    font-family: "Helvetica", sans-serif;
+}
+
 #h1b {
     color: #bf0d3e;
     background-color: #d4cfd8;
-    padding: 10px;
+    padding: 10px 10px 10px 10px;
     font-size: 10em;
     text-align: center;
     width: 100%;
-    margin: 0;
+    margin: 0px 0px 0px 0px;
     z-index: 1;
     border: none;
     font-weight: bold;
-    border-radius: 0;
+    font-family: "Helvetica";
+    border-radius: 0px;
 }
 
-/* Navigation Buttons */
+#navbuttons {
+    font-size: 0;
+    font-family: "Helvetica";
+    position: sticky;
+    top: 0;
+    left: 0;
+}
+ 
+#collection-selction{
+    font-size: 0;
+    font-family: "Helvetica";
+    position: relative;
+    top: 4vh;
+    left: 0; 
+}
+
+.collection-selection-button{
+    height: 20vh;
+    border: none;
+    background-color: #d4cfd8;
+    
+    
+}
+.collection-selection-button img{
+    width: 90%;
+    filter: grayscale(100%);
+    align-items: center;
+}
+
+.collection-selection-button:hover img{
+    filter: grayscale(100%) blur(5px);
+}
+
 .navButton {
     background-color: #bf0d3e;
     border: none;
@@ -39,313 +80,462 @@ body.login-page, body.signup-page {
     width: 25%;
     height: 8vh;
     margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
     font-weight: bold;
-    border-radius: 0;
-    transition: all 0.3s ease;
+    border-radius: 0px;
+    
+    
+        
+}
+.navButton:hover {
+    background-color: #d4cfd8;
+    border: none;
+    color: #bf0d3e;
+    font-size: 30px;
+    width: 25%;
+    height: 8vh;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    font-style: italic;
+    border-radius: 0px;
+
+}
+h3 {
+    color:#0c244c;
+    background-color: #d4cfd8;
+    font-size: 4em;
+    text-align: center;
+    margin: 5vh 30% 5vh 30%;
+    padding: 10px 0px 10px 0px;
+    border-radius: 15px;
+    
 }
 
-.navButton:hover {
+.featuredcards{
+    height: 60vh;
+    padding: 0 0 0 0;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 5px;
+    padding: 10px 250px 10px 250px; 
+    
+}
+
+
+.card {
+    background-color: #d4cfd8;
+    border-radius: 4px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5px;  
+}
+
+
+.card img {
+    max-width: 70%;               
+    height: auto;                 
+    margin-bottom: 10px;
+    margin-top: 10px;          
+    border-radius: 4px;
+}
+
+.card p {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Modal styles */
+#addCardModal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with transparency */
+    text-align: center;
+  }
+
+  #addCardModal form {
+    background-color: #fff;
+    margin: 0px 0px 0px 25%; /* Center the modal */
+    padding: none;
+    border: none;
+    width: 50%; /* Adjust as needed */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #0c244c;
+    color: #d4cfd8;
+    border-radius: 0px 0px 10px 10px;
+  }
+
+  #cardDetailsModal{
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with transparency */
+    
+    align-content: center;
+  }
+  .modal-content{
+    padding: 20px;
+    width: 50%;
+    margin-left: 25%;
+    background-color: #0c244c;
+    color: #d4cfd8;
+    border-radius: 10px;
+  }
+  .modal-content .close{
+    margin-left: 98%;
+  }
+
+  #addCardModal button{
+    margin-top: 10px;
+    border-radius: 0px 0px 10px 10px;
+  }
+
+  #addCardText{
+    margin: 300px 0px 0px 0px;
+    padding: 20px 0px 20px 0px;
+    color: #d4cfd8;
+    background-color: #0c244c;
+    border-radius: 10px 10px 0px 0px;
+    width: 50%;
+    margin-left: 25%;
+  }
+ 
+
+#deleteCard  {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with transparency */
+    color: #d4cfd8;
+    text-align: center;
+    border-radius: 0px;
+    
+  }
+#deleteConfirm{
+    margin: 300px 0px 0px 25%;
+    padding: 20px 0px 20px 0px;
+    width: 50%;
+    margin: none;
+    background-color: #0c244c;
+    border-radius: 10px 10px 0px 0px;
+}
+
+  #deleteCard form {
+    background: #d4cfd8;
+    margin: 0px 0px 0px 25%;
+    padding: none;
+    border: none;
+    width: 50%; /* Adjust as needed */
+    border-radius: 0px 0px 10px 10px;
+  }
+
+  #deleteCard button {
+    border-radius: 0px 0px 10px 10px;
+  }
+  #deleteCard #yes{
+    border-radius: 0px;
+  }
+  
+  /* Close button inside modal */
+  #closeModalButton {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    
+  }
+  
+  #closeModalButton:hover,
+  #closeModalButton:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .login-container {
+    background-color: #ffffff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center; 
+  }
+
+  h2, p, input, button, a {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+.login-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333333;
+}
+
+/* Login message */
+#loginMessage {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: none; /* Initially hidden, display if there's a message */
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Form labels */
+.form-group label {
+    font-size: 14px;
+    color: #555555;
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* Form inputs */
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    background-color: #fafafa;
+    transition: border-color 0.3s ease-in-out;
+}
+
+/* Form inputs hover/focus */
+.form-group input:focus {
+    outline: none;
+    border-color: #0c244c;
+}
+
+/* Login button */
+button {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #bf0d3e;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #d4cfd8;
+}
+
+/* Signup link */
+.signup-link {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #555555;
+}
+
+/* Signup link hover */
+.signup-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
+} 
+
+.signup-container {
+    background-color: #ffffff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+
+}
+
+/* Headers for signup */
+.signup-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333333;
+}
+   
+
+.addButton{
+    background-color: #bf0d3e;
+    color: #d4cfd8;
+    font-weight: bold;
+    width: 5vw;
+    text-align: center;
+    margin: 10px 0px 5px 0px;
+    transition-duration: all 0.4s;
+    border: 2px solid #bf0d3e;
+}
+
+.addButton:hover{
     background-color: #d4cfd8;
     color: #bf0d3e;
     font-style: italic;
+    
+
 }
 
-#navbuttons{
-    font-size: 0;
-    font-family: "Helvetica";
-    position: sticky;
-    top: 0;
-    left: 0;
+#cardTypeFilter{
+    background-color: #bf0d3e;
+    color: #d4cfd8;
+    border: none;
+    width: 10vw;
+    height: 4vh;
+    margin: none;
+    margin-left: 5px;
 }
 
-/* Header Text */
-h1, h2, h3 {
+#searchBar{
+    background-color: #d4cfd8;
+    color: #333;
+    width: 15vw;
+    height: 4vh;
+    border: none;
+    margin: none;
+    padding: 3px;
+    margin-bottom: 5px;
+}
+
+#personalCollectionHeader{
+    color:#d4cfd8;
+    text-align: center;
+}
+
+#collection-title{
     color: #d4cfd8;
     text-align: center;
-    margin-bottom: 20px;
-}
-
-h3 {
-    background-color: #d4cfd8;
-    color: #0c244c;
-    font-size: 4em;
-    margin: 5vh 30%;
-    padding: 10px;
-    border-radius: 15px;
-}
-
-/* Buttons */
-button {
-    font-size: 1em;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #d4cfd8; /* Kind of white */
-    background-color: #bf0d3e; /* Red */
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #d4cfd8;
-    color: #bf0d3e;
-}
-
-/* Form Styles */
-input, select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #2775f6; /* Light blue */
-    border-radius: 5px;
-    background-color: #d4cfd8;
-    color: #0c244c;
-    transition: border-color 0.3s ease;
-}
-
-input:focus, select:focus {
-    border-color: #bf0d3e;
-    outline: none;
-}
-
-/* Collection Buttons */
-.collection-selection-button {
-    height: 20vh;
-    border: none;
-    background-color: #d4cfd8;
-}
-
-.collection-selection-button img {
-    width: 90%;
-    filter: grayscale(100%);
-}
-
-.collection-selection-button:hover img {
-    filter: grayscale(100%) blur(5px);
-}
-
-/* Cards Grid */
-.card-grid, .collection-card-grid, .myCard-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 10px 20px;
     margin-top: 20px;
 }
 
-.card {
-    background-color: #194ca1; /* Mid blue */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.collection-card img{
+    
+    border-radius: 4px;
     overflow: hidden;
-    padding: 10px;
-    text-align: center;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-    color: #d4cfd8;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.card img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-    border-radius: 5px;
-}
-
-.card .deleteButton {
-    display: none;
-    background-color: #bf0d3e;
-    color: #d4cfd8;
-    border: none;
-    padding: 5px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    border-radius: 50%;
-}
-
-.card:hover .deleteButton {
-    display: block;
-}
-
-/* Modals */
-#addCardModal, #deleteCard {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    justify-content: center;
+    transition: transform 0.2s ease;
+    display: flex; 
+    flex-direction: column;
     align-items: center;
-    z-index: 1000;
+    justify-content: center;
+    text-align: center;   
+    width: 23vw;
+    filter: grayscale(100%);
+    
 }
 
-#addCardModal form, #deleteCard form {
-    background-color: #194ca1; /* Mid blue */
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-    color: #d4cfd8;
+.collection-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 5px;
+    padding: 10px 250px 10px 160px; 
+    margin-top: 100px;
+    
 }
 
-#addCardModal form button, #deleteCard form button {
-    margin: 10px;
-    padding: 10px 20px;
-    background-color: #bf0d3e;
-    color: #d4cfd8;
-    border-radius: 5px;
-}
-
-#addCardModal form button:hover, #deleteCard form button:hover {
-    background-color: #d4cfd8;
-    color: #bf0d3e;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .card-grid, .collection-card-grid, .myCard-card-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Profile Page Styles */
-#profile-container {
-    max-width: 600px;
-    margin: 50px auto;
-    background-color: #194ca1; /* Mid blue */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    text-align: center;
-}
-
-#profile-container h1 {
-    font-size: 2rem;
-    color: #d4cfd8; /* Kind of white */
-    margin-bottom: 20px;
-}
-
-/* Input Fields */
-#user-details label {
-    font-size: 1.2rem;
-    color: #d4cfd8; /* Kind of white */
-    display: block;
-    margin: 10px 0 5px;
-}
-
-#user-details input {
+#allCardsContainer{
     width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    margin-bottom: 15px;
-    border: 1px solid #2775f6; /* Light blue */
-    border-radius: 5px;
-    background-color: #d4cfd8; /* Kind of white */
-    color: #0c244c; /* Dark blue */
-    transition: border-color 0.3s ease;
-    width: 90%;
+    margin: 0;
+    padding: 0;
 }
 
-#password{
-    width: 90%;
-    margin-top: 10px;
-}
-
-#passwordForm{
-    margin-top: 10px;
-}
-
-#user-details input:focus {
-    outline: none;
-    border-color: #bf0d3e; /* Red */
-}
-
-/* Buttons in Profile */
-#profile-container #buttons button {
-    font-size: 1rem;
-    padding: 10px 20px;
-    margin: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    color: #d4cfd8; /* Kind of white */
-    background-color: #bf0d3e; /* Red */
-}
-
- #profile-container #buttons button:hover {
-    background-color: #d4cfd8; /* Kind of white */
-    color: #bf0d3e; /* Red */
-}
-
-#confirmButton, #cancelButton {
-    display: none; /* Initially hidden */
-}
-
-/* Modal container */
-.modal {
-  display: none;
+/* General styles for the popup */
+#deletCard {
   position: fixed;
-  z-index: 1000;
+  z-index: 1000; /* Ensure it is on top of other content */
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Black with opacity */
-  justify-content: center;
-  align-items: center;
-  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  display: flex; /* Flexbox for centering */
 }
 
-/* Modal content */
-.modal-content {
-  background-color: #194ca1; /* Mid blue */
-  margin: 15% auto;
+/* Popup content */
+#deletCard form {
+  background-color: white;
   padding: 20px;
-  border: 1px solid #0c244c; /* Dark blue */
-  width: 80%;
   border-radius: 10px;
-  color: #d4cfd8; /* Kind of white */
-  text-align: left;
-}
-
-/* Close button */
-.modal-content .close {
-  color: #d4cfd8; /* Kind of white */
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.modal-content .close:hover,
-.modal-content .close:focus {
-  color: #bf0d3e; /* Red */
-  text-decoration: none;
-}
-
-.loadMoreButton {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
   text-align: center;
-  padding: 20px;
 }
 
-#loginForm button {
-    width: 109%;
+/* Heading styles */
+#deletCard h1 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #333;
 }
 
-#cardTypeFilter{
-    width: 20%;
-    margin-left: 1.5%;
+/* Button styles */
+#deletCard button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin: 0 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-#searchBar{
-    width: 75%;
+#deletCard button:hover {
+  background-color: #0056b3;
 }
 
+#deletCard button#no {
+  background-color: #dc3545;
+}
+
+#deletCard button#no:hover {
+  background-color: #a71d2a;
+}
+
+.myCard-card-grid {
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    gap: 5px; 
+    margin-top: 100px;
+}

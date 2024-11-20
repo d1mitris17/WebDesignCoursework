@@ -255,6 +255,11 @@ input:focus, select:focus {
 
 #password{
     width: 90%;
+    margin-top: 10px;
+}
+
+#passwordForm{
+    margin-top: 10px;
 }
 
 #user-details input:focus {
@@ -329,5 +334,18 @@ input:focus, select:focus {
 .loadMoreButton {
   text-align: center;
   padding: 20px;
+}
+
+#loginForm button {
+    width: 109%;
+}
+
+#cardTypeFilter{
+    width: 20%;
+    margin-left: 1.5%;
+}
+
+#searchBar{
+    width: 75%;
 }
 

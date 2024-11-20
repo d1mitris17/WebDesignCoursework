@@ -165,7 +165,6 @@ $(document).ready(function () {
     const modalContent = `
     <div class="modal" id="cardDetailsModal">
       <div class="modal-content" style="background-image: url('${card.image_url}'); background-size: cover; background-position: center;">
-        <span class="close">&times;</span>
         <div class="modal-overlay">
           <h2>${card.name}</h2>
           <p><strong>Type:</strong> ${card.card_type}</p>

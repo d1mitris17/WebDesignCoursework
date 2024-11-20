@@ -58,6 +58,15 @@ $(document).ready(function () {
     $(".deleteCardButton").fadeIn(); // Show delete buttons
   });
 
+    // Event: Hide modal when clicking outside or on close button
+    $(window).on("click", function (event) {
+      if ($(event.target).is("#cardDetailsModal")) {
+        $("#cardDetailsModal").fadeOut(function () {
+          $(this).remove(); // Remove modal from DOM
+        });
+      }
+    });
+
   // Show confirmation modal for delete
   $(document).on("click", ".deleteCardButton", function (event) {
     event.stopPropagation(); // Prevent triggering the card click event
@@ -101,7 +110,6 @@ $(document).ready(function () {
     const modalContent = `
       <div class="modal" id="cardDetailsModal">
         <div class="modal-content">
-          <span class="close">&times;</span>
           <h2>${card.name}</h2>
           <p><strong>Type:</strong> ${card.card_type}</p>
           <p><strong>Set:</strong> ${card.set_name}</p>

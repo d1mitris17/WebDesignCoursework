@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("../db/database"); // Import the database connection
 const router = express.Router();
+const { requireAuth } = require("./authMiddleware");
 
 // Signup route
 router.post("/signup", async (req, res) => {
@@ -94,16 +95,43 @@ function authenticateToken(req, res, next) {
 }
 
 // Endpoint to get logged-in user information
-router.get("/me", authenticateToken, async (req, res) => {
+router.get("/me", requireAuth, async (req, res) => {
   try {
     // Here, req.user contains the user info decoded from the JWT
-    const [results] = await db.query("SELECT id, username FROM users WHERE id = ?", [req.user.id]);
+    const [results] = await db.query("SELECT id, username, email, password FROM users WHERE id = ?", [req.user.id]);
     if (results.length === 0) return res.status(404).json({ message: "User not found" });
 
     res.json(results[0]); // Return user info
   } catch (error) {
     console.error("Database error:", error);
     res.status(500).json({ message: "Internal server error", error });
+  }
+});
+
+// Update user details
+router.put("/me", requireAuth, async (req, res) => {
+  const userId = req.user.id;
+  const { username, email, password } = req.body;
+
+  try {
+    if (username || email) {
+      // Update username and email
+      await db.query(
+        `UPDATE users SET username = ?, email = ? WHERE id = ?`,
+        [username, email, userId]
+      );
+    }
+
+    if (password) {
+      // Update password with hashing
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await db.query(`UPDATE users SET password = ? WHERE id = ?`, [hashedPassword, userId]);
+    }
+
+    res.json({ message: "User details updated successfully." });
+  } catch (error) {
+    console.error("Error updating user details:", error);
+    res.status(500).json({ message: "Failed to update user details." });
   }
 });
 

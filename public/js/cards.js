@@ -1,5 +1,6 @@
 $(document).ready(function () {
   let selectedCardId = null; // To track the card being deleted
+  let deleteMode = false; // To track if delete mode is enabled
 
   // Function to fetch cards
   function fetchCards() {
@@ -29,8 +30,7 @@ $(document).ready(function () {
     cards.forEach((card) => {
       const cardElement = $(`
         <div class="card">
-          <button class="deleteButton" data-id="${card.id}" style="display: none;">&times;</button>
-        
+          <button class="deleteCardButton" data-id="${card.id}" style="display: none;">&times;</button>
           <h2>${card.name}</h2>
           <p><strong>Type:</strong> ${card.card_type}</p>
           <p><strong>Set:</strong> ${card.set_name}</p>
@@ -39,17 +39,28 @@ $(document).ready(function () {
           <p><strong>Release Date:</strong> ${card.release_date}</p>
         </div>
       `);
+
+      // Add click event to show details or handle delete
+      cardElement.on("click", function () {
+        if (!deleteMode) {
+          showCardDetails(card); // Pass the full card object
+        }
+      });
+
+      // Append card element
       cardContainer.append(cardElement);
     });
   }
 
-  // Show delete buttons
+  // Enable delete mode and show delete buttons
   $("#removeCard").on("click", function () {
-    $(".deleteButton").fadeIn();
+    deleteMode = true;
+    $(".deleteCardButton").fadeIn(); // Show delete buttons
   });
 
-  // Show confirmation modal
-  $(document).on("click", ".deleteButton", function () {
+  // Show confirmation modal for delete
+  $(document).on("click", ".deleteCardButton", function (event) {
+    event.stopPropagation(); // Prevent triggering the card click event
     selectedCardId = $(this).data("id");
     $("#deleteCard").fadeIn();
   });
@@ -57,13 +68,17 @@ $(document).ready(function () {
   // Cancel delete
   $("#no").on("click", function (event) {
     event.preventDefault();
+    deleteMode = false; // Exit delete mode
     $("#deleteCard").fadeOut();
+    $(".deleteCardButton").fadeOut(); // Hide delete buttons
   });
 
   // Confirm delete
   $("#yes").on("click", function (event) {
     event.preventDefault();
     $("#deleteCard").fadeOut();
+    $(".deleteCardButton").fadeOut(); // Hide delete buttons
+    deleteMode = false; // Exit delete mode
 
     // Call API to delete card
     $.ajax({
@@ -80,6 +95,43 @@ $(document).ready(function () {
       },
     });
   });
+
+  function showCardDetails(card) {
+    // Populate modal with card details
+    const modalContent = `
+      <div class="modal" id="cardDetailsModal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>${card.name}</h2>
+          <p><strong>Type:</strong> ${card.card_type}</p>
+          <p><strong>Set:</strong> ${card.set_name}</p>
+          <p><strong>Number:</strong> ${card.card_number}</p>
+          <p><strong>Rarity:</strong> ${card.rarity}</p>
+          <p><strong>Release Date:</strong> ${card.release_date}</p>
+          <p><strong>Quantity:</strong> ${card.quantity}</p>
+          <p><strong>Condition:</strong> ${card.condition}</p>
+          <p><strong>Date Acquired:</strong> ${card.date_acquired}</p>
+          <h4>Attributes:</h4>
+          <ul>
+            ${card.attributes
+        .map((attr) => `<li>${attr.attribute}: ${attr.value}</li>`)
+        .join("")}
+          </ul>
+        </div>
+      </div>
+    `;
+
+    // Append modal to body and show it
+    $("body").append(modalContent);
+    $("#cardDetailsModal").fadeIn();
+
+    // Close the modal
+    $(".close").on("click", function () {
+      $("#cardDetailsModal").fadeOut(function () {
+        $(this).remove(); // Remove modal from DOM
+      });
+    });
+  }
 
   // Initial fetch
   fetchCards();

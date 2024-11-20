@@ -22,9 +22,45 @@
            <button id = "signOutButton" class = "navButton">Sign Out</button>
         </a>
     </div>
+<div id="profile-container">
+        <h1>My Profile</h1>
+
+        <!-- Form for username and email -->
+        <form id="userDetailsForm">
+            <div id="user-details">
+                <label>Username:</label>
+                <input type="text" id="username" value="" disabled />
+                <br />
+                <label>Email:</label>
+                <input type="email" id="email" value="" disabled />
+                <br />
+            </div>
+            <div id="userDetailsButtons">
+                <button type="button" id="editDetailsButton">Edit</button>
+                <button type="submit" id="saveDetailsButton" style="display: none;">Save</button>
+                <button type="button" id="cancelDetailsButton" style="display: none;">Cancel</button>
+            </div>
+        </form>
+
+        <!-- Form for password -->
+        <form id="passwordForm">
+            <div id="password-details">
+                <label>Password:</label>
+                <input type="password" id="password" value="" disabled />
+                <button type="button" id="togglePassword" style="display: none;">Show</button>
+                <br />
+            </div>
+            <div id="passwordButtons">
+                <button type="button" id="editPasswordButton">Edit</button>
+                <button type="submit" id="savePasswordButton" style="display: none;">Save</button>
+                <button type="button" id="cancelPasswordButton" style="display: none;">Cancel</button>
+            </div>
+        </form>
+    </div>
 <!-- Include jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Include the frontend JavaScript for signout -->
 <script src="js/signout.js"></script>
+<script src="js/profile.js"></script>
 </body>
 </html>
